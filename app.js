@@ -27,7 +27,7 @@ app.get('/active-installs/:plugin', async (request, reply) => {
   reply
     .type('application/json')
     .send({
-      color: 'orange',
+      color: 'blue',
       label: 'active installs',
       schemaVersion: 1,
       message,
