@@ -30,6 +30,7 @@ app.get('/active-installs/:plugin', async (request, reply) => {
       color: 'blue',
       label: 'active installs',
       schemaVersion: 1,
+      style: 'flat-square',
       message,
     })
     .code(message !== UNKNOWN_PLUGIN ? 200 : 404);
