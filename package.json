@@ -1,6 +1,7 @@
 {
   "name": "rl-plugin-shields",
   "version": "1.0.0",
+  "private": true,
   "description": "Shields for RuneLite's plugins from Plugin Hub.",
   "repository": {
     "type": "git",
