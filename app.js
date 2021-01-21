@@ -1,12 +1,11 @@
 const axios = require('axios');
 const fastify = require('fastify');
 
-const RUNELITE_VERSION = '1.6.36.2';
-const API_URL = `https://api.runelite.net/runelite-${RUNELITE_VERSION}`;
+const RUNELITE_BOOTSTRAP_URL = 'https://static.runelite.net/bootstrap.json';
+const RUNELITE_API_URL = `https://api.runelite.net`;
 const UNKNOWN_PLUGIN = 'unknown';
 
 const api = axios.create({
-  baseURL: API_URL,
   responseType: 'json',
 });
 
@@ -18,7 +17,15 @@ app.get('/active-installs/:plugin', async (request, reply) => {
   const { plugin } = request.params;
   let message = UNKNOWN_PLUGIN;
 
-  const plugins = await api.get(`${API_URL}/pluginhub`);
+  const runeLiteBootstrap = await api.get(RUNELITE_BOOTSTRAP_URL);
+
+  if (!runeLiteBootstrap.data || !runeLiteBootstrap.data.client || !runeLiteBootstrap.data.client.version) {
+    reply.type('application/json').send().code(503);
+
+    return;
+  }
+
+  const plugins = await api.get(`${RUNELITE_API_URL}/runelite-${runeLiteBootstrap.data.client.version}/pluginhub`);
 
   if (plugins.data && plugins.data[plugin]) {
     message = plugins.data[plugin].toString();
